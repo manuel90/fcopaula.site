@@ -1,6 +1,7 @@
 <div class="box-authors">
 	<div class="">
 		<select id="available_authors_book">
+			<option value=""><?php _e('--- Select a User ---', 'fpsa_lang'); ?></option>
 			<?php foreach($usersOption as $user) { ?>
 				<option value="<?php echo $user->ID; ?>"><?php echo $user->data->display_name; ?></option>
 			<?php } ?>
@@ -9,7 +10,6 @@
 	</div>
 	<div class="selecteds">
 		<ul id="fpsa_authors_book">
-			<li><span>Author Example</span><div class="actions"><a href="#">View</a><a href="#">X</a></div></li>
 		</ul>
 	</div>
 </div>

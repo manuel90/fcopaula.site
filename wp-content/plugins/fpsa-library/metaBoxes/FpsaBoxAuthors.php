@@ -15,18 +15,29 @@ class FpsaBoxAuthors extends MasterFpsaBox {
 			'title' => __('Author Books', 'fpsa_lang'),
 			'screens' => array('fpsa-books'),
 			'translation' => array(
-			    'txtRemove' => __( 'Delete', 'fpsa_lang' )
+			    'txtRemove' => __( 'Delete', 'fpsa_lang' ),
+			    'txtSelectAuthor' => __( '--- Select a User ---', 'fpsa_lang' ),
+			    'txtNoSeletedUser' => __( 'Select a User', 'fpsa_lang' )
 			)
 		));
 
 	}
 
 	static function actions() {
-		add_action( 'wp_ajax_adduser', array('FpsaBoxAuthors', 'addAuthorOfBook') );
+		add_action( 'wp_ajax_fpsa-adduser', array('FpsaBoxAuthors', 'addAuthorOfBook') );
 
-		add_action( 'wp_ajax_availableusers', array('FpsaBoxAuthors', 'getAjaxAvailableUsers') );
+		add_action( 'wp_ajax_fpsa-availableusers', array('FpsaBoxAuthors', 'getAjaxAvailableUsers') );
 
-		add_action( 'wp_ajax_FpsaBoxAuthors_removeUser', array($this, 'deleteAuthorOfBook') );
+		add_action( 'wp_ajax_fpsa-authors', array('FpsaBoxAuthors', 'getAjaxAuthors') );
+		
+
+		add_action( 'wp_ajax_fpsa-removeuser', array('FpsaBoxAuthors', 'deleteAuthorOfBook') );
+	}
+
+	public function getAjaxAuthors() {
+		$authors = get_post_meta($_POST['postID'], 'fpsa_book_authors', true);
+		
+		die( parent::formatterResponse($authors) );
 	}
 
 	/**
@@ -64,7 +75,7 @@ class FpsaBoxAuthors extends MasterFpsaBox {
 	public function deleteAuthorOfBook() {
 		
 
-		$values = get_post_meta($_POST['postID'], 'fpsa_book_authors');
+		$values = get_post_meta($_POST['postID'], 'fpsa_book_authors', true);
 
 		if(array_key_exists($_POST['userID'], $values)) {
 			unset($values[$_POST['userID']]);
@@ -83,7 +94,6 @@ class FpsaBoxAuthors extends MasterFpsaBox {
 		global $post;
 
 		$this->addJSVar('postID', $post->ID);
-		
 		
 		$parameters = array(
 			'usersOption' => self::getAvailableUsers($post->ID)

@@ -52,19 +52,21 @@ class FpsaLibrary {
 		 * Styles and Javascripts
 		 */
 
-/*
-		wp_register_script( 'fpsaLangJS', plugins_url( 'fpsa_lang.js', __FILE__), array(), false, true );
+
+		wp_register_script( 'fpsa_library', plugins_url( 'fpsa_library.js', __FILE__), array(), false, true );
  
 		// Localize the script with new data
 		$translation_array = array(
 		    'some_string' => __( 'Some string to translate', 'textdomain' ),
 		    'a_value' => '10'
 		);
-		wp_localize_script( 'some_handle', 'object_name', $translation_array );
+		//wp_localize_script( 'some_handle', 'object_name', $translation_array );
 		 
 		// Enqueued script with localized data.
-		wp_enqueue_script( 'some_handle' );
-		*/
+		wp_enqueue_script( 'fpsa_library' );
+		
+		wp_register_style( 'fpsa_style', plugins_url( 'css/fpsa.css', __FILE__ ) );
+    	wp_enqueue_style( 'fpsa_style' );
 
 		FpsaBoxAuthors::actions();
 	}

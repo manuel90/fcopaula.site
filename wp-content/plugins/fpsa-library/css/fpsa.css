@@ -1,0 +1,85 @@
+.fpsa_prelative {
+  position: relative;
+}
+body.fpsa_prelative > #fpsa_spinner {
+  position: fixed;
+}
+.fpsa_prelative > #fpsa_spinner {
+  position: absolute;
+}
+#fpsa_spinner {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+#fpsa_spinner .fpsa_bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 998;
+  background-color: #000000;
+  opacity: 0.50;
+  filter: alpha(opacity=50);
+}
+
+
+#fpsa_spinner .spinner_content {
+  position: relative;
+  z-index: 999;
+  margin: 50px auto 0 auto;
+  width: 50px;
+  height: 40px;
+  font-size: 10px;
+}
+
+#fpsa_spinner .spinner_content > div {
+  background-color: #fff;
+  height: 100%;
+  width: 6px;
+  display: inline-block;
+  margin-right: 3px;
+  
+  -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+  animation: sk-stretchdelay 1.2s infinite ease-in-out;
+}
+
+#fpsa_spinner .spinner_content .fpsa_rect2 {
+  -webkit-animation-delay: -1.1s;
+  animation-delay: -1.1s;
+}
+
+#fpsa_spinner .spinner_content .fpsa_rect3 {
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+}
+
+#fpsa_spinner .spinner_content .fpsa_rect4 {
+  -webkit-animation-delay: -0.9s;
+  animation-delay: -0.9s;
+}
+
+#fpsa_spinner .spinner_content .fpsa_rect5 {
+  -webkit-animation-delay: -0.8s;
+  animation-delay: -0.8s;
+}
+
+@-webkit-keyframes sk-stretchdelay {
+  0%, 40%, 100% { -webkit-transform: scaleY(0.4) }  
+  20% { -webkit-transform: scaleY(1.0) }
+}
+
+@keyframes sk-stretchdelay {
+  0%, 40%, 100% { 
+    transform: scaleY(0.4);
+    -webkit-transform: scaleY(0.4);
+  }  20% { 
+    transform: scaleY(1.0);
+    -webkit-transform: scaleY(1.0);
+  }
+}

@@ -9,7 +9,7 @@ abstract class MasterFpsaBox {
 
 		$className = get_class($this);
 
-		wp_register_script( $className.'JS', plugins_url( 'metaBoxes/'.$className.'.scripts.js', __FILE__), array('jquery'), true, true );
+		wp_register_script( $className.'JS', plugins_url( 'metaBoxes/'.$className.'.scripts.js', __FILE__), array('jquery', 'fpsa_library'), true, true );
 
 		self::$varsJS = array_merge( self::$varsJS, $config['translation'] );
 
