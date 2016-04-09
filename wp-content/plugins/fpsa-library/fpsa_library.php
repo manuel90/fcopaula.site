@@ -9,7 +9,15 @@ Author URI: http://facebook.com/mlopezlara90
 License: GPL2
 */
 
+if( !defined('DS') ) {
+	define('DS', DIRECTORY_SEPARATOR);
+}
 
+define('PATH_PLUGIN',dirname(__FILE__));
+
+require_once('metaBoxes'.DIRECTORY_SEPARATOR.'FpsaBoxAuthors.php');
+
+//use App\Models\Usuario;
 class FpsaLibrary {
 
 
@@ -26,26 +34,39 @@ class FpsaLibrary {
 		/**
 		 * Init action
 		 */
-		add_action( 'init', array('FpsaLibrary','initAction') );
+		add_action( 'init', array($this,'initAction') );
 
 		/**
 		 * Meta Boxes action hook
 		 */
-		add_action( 'add_meta_boxes', array('FpsaLibrary', 'addBoxes') );
+		add_action( 'add_meta_boxes', array($this, 'addBoxes') );
 
 		/**
 		 * Activate and deactivate hooks
 		 */
-		register_activation_hook(__FILE__, array('FpsaLibrary','activate') );
-		register_deactivation_hook( __FILE__, array('FpsaLibrary','deactivate') );
+		register_activation_hook(__FILE__, array($this,'activate') );
+		register_deactivation_hook( __FILE__, array($this,'deactivate') );
 
 
 		/**
 		 * Styles and Javascripts
 		 */
-		//wp_enqueue_style();
-		//wp_enqueue_script();
 
+/*
+		wp_register_script( 'fpsaLangJS', plugins_url( 'fpsa_lang.js', __FILE__), array(), false, true );
+ 
+		// Localize the script with new data
+		$translation_array = array(
+		    'some_string' => __( 'Some string to translate', 'textdomain' ),
+		    'a_value' => '10'
+		);
+		wp_localize_script( 'some_handle', 'object_name', $translation_array );
+		 
+		// Enqueued script with localized data.
+		wp_enqueue_script( 'some_handle' );
+		*/
+
+		FpsaBoxAuthors::actions();
 	}
 
 	/**
@@ -100,20 +121,10 @@ class FpsaLibrary {
 	 * Function call to set up "add_meta_boxes" action hook
 	 */
 	public function addBoxes() {
-		$screens = array(
-			'fpsa-books'
-		);
-		add_meta_box( 'box_authors', __('Author Books'), array('FpsaLibrary','boxAuthors'), $screens, 'advanced', 'default', null);
+		$boxAuthors = new FpsaBoxAuthors();
 	}
 
-	/**
-	 * Function call to add html content to box
-	 */
-	public function boxAuthors($parameters) {
-		/**
-		 * Meta box authors
-		 */
-	}
+	
 
 	/**
 	 * Function call when plugin is activated
