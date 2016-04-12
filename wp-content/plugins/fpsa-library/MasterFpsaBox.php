@@ -3,10 +3,12 @@
 abstract class MasterFpsaBox {
 
 	static $varsJS = array();
+	var $config = array();
 		
 	public function __construct(array $config) {
-		add_meta_box( $config['id'], $config['title'], array($this,'viewBox'), $config['screens'], 'advanced', 'default', null);
-
+		
+		$this->config = $config;
+		
 		$className = get_class($this);
 
 		wp_register_script( $className.'JS', plugins_url( 'metaBoxes/'.$className.'.scripts.js', __FILE__), array('jquery', 'fpsa_library'), true, true );
@@ -16,6 +18,10 @@ abstract class MasterFpsaBox {
 		wp_localize_script( $className.'JS', $className,  self::$varsJS);
 		 
 		wp_enqueue_script( $className.'JS' );
+	}
+
+	public function wpAddBox() {
+		add_meta_box( $this->config['id'], $this->config['title'], array($this,'viewBox'), $this->config['screens'], 'advanced', 'default', null);
 	}
 
 	public function addJSVar($name, $value) {

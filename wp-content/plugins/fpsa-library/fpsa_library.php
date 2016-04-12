@@ -16,15 +16,23 @@ if( !defined('DS') ) {
 define('PATH_PLUGIN',dirname(__FILE__));
 
 require_once('metaBoxes'.DIRECTORY_SEPARATOR.'FpsaBoxAuthors.php');
+require_once('metaBoxes'.DIRECTORY_SEPARATOR.'FpsaBoxBooks.php');
 
 //use App\Models\Usuario;
 class FpsaLibrary {
 
-
+	var $boxAuthors = null;
 	/**
 	 * Construct Function
 	 */
 	public function __construct() {
+
+		$this->boxAuthors = new FpsaBoxAuthors();
+
+		$boxBooks = new FpsaBoxBooks();
+		$boxBooks->wpAddBox();
+
+		add_action( 'edit_user_profile', array($this, 'addBoxBooks') );
 		
 		/**
 		 * Languages action
@@ -69,7 +77,37 @@ class FpsaLibrary {
     	wp_enqueue_style( 'fpsa_style' );
 
 		FpsaBoxAuthors::actions();
+
+		add_action( 'admin_menu', array($this, 'addMenuAuthors') );
+
+		
 	}
+
+	/**
+	 * Function call to add meta box on section admin profile page user
+	 */
+	public function addBoxBooks($user) {
+		
+		if( user_can($user, 'author') ) {
+			do_meta_boxes('user-profile-author', 'advanced', null);
+		}
+	}
+
+	/**
+	 * Function call to add a menu Author in the admin sidebar menu
+	 */
+	public function addMenuAuthors() {
+	    add_menu_page(
+	        __( 'Authors', 'fpsa_lang' ),
+	        __( 'Authors', 'fpsa_lang' ),
+	        'manage_options',
+	        'users.php?role=author',
+	        '',
+	        'dashicons-admin-users',
+	        26
+	    );
+	}
+
 
 	/**
 	 * Function to load the plugin language
@@ -119,11 +157,17 @@ class FpsaLibrary {
 		register_post_type ( 'fpsa-books', $options );
 	}
 
+	public function fpsa_add_custom_box($id, $title, $callback, $screen = null, $context = 'advanced', $priority = 'default', $callback_args = null) {
+
+		
+
+	}
+
 	/**
 	 * Function call to set up "add_meta_boxes" action hook
 	 */
 	public function addBoxes() {
-		$boxAuthors = new FpsaBoxAuthors();
+		$this->boxAuthors->wpAddBox();
 	}
 
 	

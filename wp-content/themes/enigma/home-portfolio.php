@@ -16,9 +16,10 @@
 		<div class="row" >
 			<div id="enigma_portfolio_section" class="enima_photo_gallery">
 				<?php for($i=1 ; $i<=4; $i++) { ?>
+				<?php if($wl_theme_options['port_'.$i.'_img'] !='') { ?>
 				<div class="col-lg-3 col-md-3 col-sm-6 pull-left scrollimation fade-right d1"> 
 					<div class="img-wrapper">
-					<?php if($wl_theme_options['port_'.$i.'_img'] !='') { ?>
+					
 						<div class="enigma_home_portfolio_showcase">
 							<img class="enigma_img_responsive" alt="<?php the_title_attribute(); ?>" src="<?php echo esc_url($wl_theme_options['port_'.$i.'_img']); ?>">
 							<div class="enigma_home_portfolio_showcase_overlay">
@@ -30,7 +31,7 @@
 								</div>
 							</div>
 						</div>
-					<?php } ?>
+					
 					<?php if($wl_theme_options['port_'.$i.'_title'] !='') { ?>	
 					<div class="enigma_home_portfolio_caption">
 					<h3><a href="<?php echo esc_url($wl_theme_options['port_'.$i.'_link']); ?>"><?php echo esc_attr($wl_theme_options['port_'.$i.'_title']); ?></a></h3>
@@ -39,6 +40,7 @@
 					</div>
 					<div class="enigma_portfolio_shadow"></div>
 				</div>
+				<?php } ?>
 				<?php } ?>
 			</div>
 			</div>

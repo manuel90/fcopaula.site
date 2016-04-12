@@ -3,13 +3,13 @@ add_action( 'customize_register', 'weblizar_gl_customizer' );
 
 function weblizar_gl_customizer( $wp_customize ) {
 	wp_enqueue_style('customizr', WL_TEMPLATE_DIR_URI .'/css/customizr.css');
-	$ImageUrl1 = WL_TEMPLATE_DIR_URI ."/images/1.png";
-	$ImageUrl2 = WL_TEMPLATE_DIR_URI ."/images/2.png";
-	$ImageUrl3 = WL_TEMPLATE_DIR_URI ."/images/3.png";
-	$ImageUrl4 = esc_url(get_template_directory_uri() ."/images/home-ppt1.png");
-	$ImageUrl5 = esc_url(get_template_directory_uri() ."/images/home-ppt2.png");
-	$ImageUrl6 = esc_url(get_template_directory_uri() ."/images/home-ppt3.png");
-	$ImageUrl7 = esc_url(get_template_directory_uri() ."/images/home-ppt4.png");
+	$ImageUrl1 = esc_url(get_template_directory_uri() ."/images/1.png");
+	$ImageUrl2 = esc_url(get_template_directory_uri() ."/images/2.png");
+	$ImageUrl3 = esc_url(get_template_directory_uri() ."/images/3.png");
+	$port['1'] = esc_url(get_template_directory_uri() ."/images/portfolio1.png");
+	$port['2'] = esc_url(get_template_directory_uri() ."/images/portfolio2.png");
+	$port['3'] = esc_url(get_template_directory_uri() ."/images/portfolio3.png");
+	$port['4'] = esc_url(get_template_directory_uri() ."/images/portfolio4.png");
 	
 	/* Genral section */
 	$wp_customize->add_panel( 'enigma_theme_option', array(
@@ -105,19 +105,19 @@ $wp_customize->add_section(
 		'settings'   => 'enigma_options[upload_image_favicon]',
 	) ) );
 	$wp_customize->add_setting(
-	'weblizar_options[custom_css]',
+	'enigma_options[custom_css]',
 		array(
 		'default'=>esc_attr($wl_theme_options['custom_css']),
 		'type'=>'option',
 		'capability'=>'edit_theme_options',
-		'sanitize_callback'=>'weblizar_sanitize_text',
+		'sanitize_callback'=>'enigma_sanitize_text',
 		)
 	);
 	$wp_customize->add_control( 'custom_css', array(
 		'label'        => __( 'Custom CSS', 'weblizar' ),
 		'type'=>'textarea',
 		'section'    => 'general_sec',
-		'settings'   => 'weblizar_options[custom_css]'
+		'settings'   => 'enigma_options[custom_css]'
 	) );
 	/* Slider options */
 	$wp_customize->add_section(
@@ -378,6 +378,17 @@ $wp_customize->add_section(
 	'active_callback' => 'is_front_page',
 	));
 	$wp_customize->add_setting(
+		'enigma_options[service_home]',
+		array(
+			'type'    => 'option',
+			'default'=>$wl_theme_options['service_home'],
+			'sanitize_callback'=>'enigma_sanitize_checkbox',
+			'capability' => 'edit_theme_options'
+		)
+	);
+	
+	
+	$wp_customize->add_setting(
 	'enigma_options[home_service_heading]',
 		array(
 		'default'=>esc_attr($wl_theme_options['home_service_heading']),
@@ -477,6 +488,39 @@ $wp_customize->add_section(
 		'capability'=>'edit_theme_options',
 		)
 	);
+	
+	$wp_customize->add_setting(
+	'enigma_options[service_1_link]',
+		array(
+		'default'=>esc_attr($wl_theme_options['service_1_link']),
+		'type'=>'option',
+		'capability'=>'edit_theme_options',
+		'sanitize_callback'=>'esc_url_raw',
+		));
+	$wp_customize->add_setting(
+	'enigma_options[service_2_link]',
+		array(
+		'default'=>esc_attr($wl_theme_options['service_2_link']),
+		'type'=>'option',
+		'capability'=>'edit_theme_options',
+		'sanitize_callback'=>'esc_url_raw',
+		));
+	$wp_customize->add_setting(
+	'enigma_options[service_3_link]',
+		array(
+		'default'=>esc_attr($wl_theme_options['service_3_link']),
+		'type'=>'option',
+		'capability'=>'edit_theme_options',
+		'sanitize_callback'=>'esc_url_raw',
+		));
+	
+	$wp_customize->add_control( 'enigma_show_service', array(
+		'label'        => __( 'Enable Service on Home', 'weblizar' ),
+		'type'=>'checkbox',
+		'section'    => 'service_section',
+		'settings'   => 'enigma_options[service_home]'
+	) );
+	
 	$wp_customize->add_control(
     new enigma_Customize_Misc_Control(
         $wp_customize,
@@ -510,6 +554,12 @@ $wp_customize->add_section(
 		'section'    => 'service_section',
 		'settings'   => 'enigma_options[service_1_text]'
 	) );
+	$wp_customize->add_control( 'service_1_link', array(
+		'label'        => __( 'Service One Link', 'weblizar' ),
+		'type'=>'url',
+		'section'    => 'service_section',
+		'settings'   => 'enigma_options[service_1_link]'
+	) );
 		$wp_customize->add_control(
     new enigma_Customize_Misc_Control(
         $wp_customize,
@@ -540,6 +590,12 @@ $wp_customize->add_section(
 		'section'    => 'service_section',
 		'settings'   => 'enigma_options[service_2_text]'
 	) );
+	$wp_customize->add_control( 'service_2_link', array(
+		'label'        => __( 'Service Two Link', 'weblizar' ),
+		'type'=>'url',
+		'section'    => 'service_section',
+		'settings'   => 'enigma_options[service_2_link]'
+	) );
 		$wp_customize->add_control(new enigma_Customize_Misc_Control(
         $wp_customize, 'enigma_service_options3-line',
         array(
@@ -567,6 +623,12 @@ $wp_customize->add_section(
 		'type'=>'text',
 		'section'    => 'service_section',
 		'settings'   => 'enigma_options[service_3_text]'
+	) );
+	$wp_customize->add_control( 'service_3_link', array(
+		'label'        => __( 'Service Three Link', 'weblizar' ),
+		'type'=>'url',
+		'section'    => 'service_section',
+		'settings'   => 'enigma_options[service_3_link]'
 	) );
 /* Portfolio Section */
 	$wp_customize->add_section(
@@ -604,7 +666,7 @@ $wp_customize->add_section(
 			'enigma_options[port_'.$i.'_img]',
 			array(
 				'type'    => 'option',
-				'default'=>$wl_theme_options['port_'.$i.'_img'],
+				'default'=>$port[$i],
 				'capability' => 'edit_theme_options',
 				'sanitize_callback'=>'esc_url_raw',
 			)
@@ -646,19 +708,19 @@ $wp_customize->add_section(
 	for($i=1;$i<=4;$i++){
 	$j = array(' One', ' Two', ' Three', ' Four');
 		$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'enigma_portfolio_img_'.$i, array(
-		'label'        => __( 'Portfolio Image'.$j[$i-1], 'weblizar' ),
+		'label'        => __( 'Portfolio Image', 'weblizar' ).$j[$i-1],
 		'section'    => 'portfolio_section',
 		'settings'   => 'enigma_options[port_'.$i.'_img]'
 	) ) );
 	$wp_customize->add_control( 'enigma_portfolio_title_'.$i, array(
-		'label'        => __( 'Portfolio Title'.$j[$i-1], 'weblizar' ),
+		'label'        => __( 'Portfolio Title', 'weblizar').$j[$i-1],
 		'type'=>'text',
 		'section'    => 'portfolio_section',
 		'settings'   => 'enigma_options[port_'.$i.'_title]'
 	) );
 	
 	$wp_customize->add_control( 'enigma_portfolio_link_'.$i, array(
-		'label'        => __( 'Portfolio Link'.$j[$i-1], 'weblizar' ),
+		'label'        => __( 'Portfolio Link', 'weblizar' ).$j[$i-1],
 		'type'=>'url',
 		'section'    => 'portfolio_section',
 		'settings'   => 'enigma_options[port_'.$i.'_link]'
@@ -702,6 +764,70 @@ $wp_customize->add_section(
 		'section'    => 'blog_section',
 		'settings'   => 'enigma_options[blog_title]',
 	) );
+	
+/* Font Family Section */
+	$wp_customize->add_section('font_section', array(
+	'title' => __('Typography Settings', 'weblizar'),
+	'panel' => 'enigma_theme_option',
+	'capability' => 'edit_theme_options',
+	'priority' => 35
+	));
+	
+	$wp_customize->add_setting(
+	'enigma_options[main_heading_font]',
+	array(
+	'default' => esc_attr($wl_theme_options['main_heading_font']),
+	'type' => 'option',
+	'sanitize_callback'=>'enigma_sanitize_text',
+	'capability'=>'edit_theme_options',
+    ));
+	$wp_customize->add_control(new enigma_Font_Control($wp_customize, 'main_heading_font', array(
+	'label' => __('Logo Font Style', 'weblizar'),
+	'section' => 'font_section',
+	'settings' => 'enigma_options[main_heading_font]',
+	)));
+	
+	$wp_customize->add_setting(
+	'enigma_options[menu_font]',
+	array(
+	'default' => esc_attr($wl_theme_options['menu_font']),
+	'type' => 'option',
+	'sanitize_callback'=>'enigma_sanitize_text',
+	'capability'=>'edit_theme_options'
+    ));
+	$wp_customize->add_control(new enigma_Font_Control($wp_customize, 'menu_font', array(
+	'label' => __('Header Menu Font Style', 'weblizar'),
+	'section' => 'font_section',
+	'settings' => 'enigma_options[menu_font]'
+	)));
+	
+	$wp_customize->add_setting(
+	'enigma_options[theme_title]',
+	array(
+	'default' => esc_attr($wl_theme_options['theme_title']),
+	'type' => 'option',
+	'sanitize_callback'=>'enigma_sanitize_text',
+	'capability'=>'edit_theme_options'
+    ));
+	$wp_customize->add_control(new enigma_Font_Control($wp_customize, 'theme_title', array(
+	'label' => __('Theme Title Font Style', 'weblizar'),
+	'section' => 'font_section',
+	'settings' => 'enigma_options[theme_title]'
+	)));
+	
+	$wp_customize->add_setting(
+	'enigma_options[desc_font_all]',
+	array(
+	'default' => esc_attr($wl_theme_options['desc_font_all']),
+	'type' => 'option',
+	'sanitize_callback'=>'enigma_sanitize_text',
+	'capability'=>'edit_theme_options'
+    ));
+	$wp_customize->add_control(new enigma_Font_Control($wp_customize, 'desc_font_all', array(
+	'label' => __('Theme Description Font Style', 'weblizar'),
+	'section' => 'font_section',
+	'settings' => 'enigma_options[desc_font_all]'
+	)));
 	
 /* Social options */
 	$wp_customize->add_section('social_section',array(
@@ -928,6 +1054,21 @@ $wp_customize->add_section(
 		'section'    => 'callout_section',
 		'settings'   => 'enigma_options[fc_btn_link]'
 	) );
+	$wp_customize->add_setting(
+	'enigma_options[fc_icon]',
+		array(
+		'default'=>esc_attr($wl_theme_options['fc_icon']),
+		'type'=>'option',
+		'capability'=>'edit_theme_options',
+		'sanitize_callback'=>'enigma_sanitize_text',
+		)
+	);
+	$wp_customize->add_control( 'fc_icon', array(
+		'label'        => __( 'Footer callout Icon', 'weblizar' ),
+		'type'=>'text',
+		'section'    => 'callout_section',
+		'settings'   => 'enigma_options[fc_icon]'
+	) );
 	/* Footer Options */
 	$wp_customize->add_section('footer_section',array(
 	'title'=>__("Footer Options",'weblizar'),
@@ -1060,7 +1201,7 @@ class More_Enigma_Control extends WP_Customize_Control {
 					<a style="margin-bottom:20px;margin-left:20px;" href="http://weblizar.com/themes/enigma-premium/" target="blank" class="btn btn-success btn"><?php _e('Upgrade to Enigma Premium','weblizar'); ?> </a>
 			</div>
 			<div class="col-md-4 col-sm-6">
-				<img class="enigma_img_responsive " src="<?php echo WL_TEMPLATE_DIR_URI .'/core/theme-options/images/Enig.png'?>">
+				<img class="enigma_img_responsive " src="<?php echo WL_TEMPLATE_DIR_URI .'/images/Enig.png'?>">
 			</div>			
 			<div class="col-md-3 col-sm-6">
 				<h3 style="margin-top:10px;margin-left: 20px;text-decoration:underline;color:#333;"><?php echo _e( 'Enigma Premium - Features','weblizar'); ?></h3>
@@ -1096,6 +1237,78 @@ class More_Enigma_Control extends WP_Customize_Control {
 		</label>
 		<?php
 	}
+}
+endif;
+
+/* class for font-family */
+if ( class_exists( 'WP_Customize_Control' ) && ! class_exists( 'enigma_Font_Control' ) ) :
+class enigma_Font_Control extends WP_Customize_Control 
+{  
+ public function render_content() 
+ {?>
+   <span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
+   <select <?php $this->link(); ?> >
+    <option  value="Abril Fatface"<?php if($this->value()== 'Abril Fatface') echo 'selected="selected"';?>><?php _e('Abril Fatface','weblizar'); ?></option>
+	<option  value="Advent Pro"<?php if($this->value()== 'Advent Pro')  echo 'selected="selected"';?>><?php _e('Advent Pro','weblizar'); ?></option>
+	<option  value="Aldrich"<?php if($this->value()== 'Aldrich') echo 'selected="selected"';?>><?php _e('Aldrich','weblizar'); ?></option>
+	<option  value="Alex Brush"<?php if($this->value()== 'Alex Brush') echo 'selected="selected"';?>><?php _e('Alex Brush','weblizar'); ?></option>
+	<option  value="Allura"<?php if($this->value()== 'Allura') echo 'selected="selected"';?>><?php _e('Allura','weblizar'); ?></option>
+	<option  value="Amatic SC"<?php if($this->value()== 'Amatic SC') echo 'selected="selected"';?>><?php _e('Amatic SC','weblizar'); ?></option>
+	<option  value="arial"<?php if($this->value()== 'arial') echo 'selected="selected"';?>><?php _e('Arial','weblizar'); ?></option>
+	<option  value="Astloch"<?php if($this->value()== 'Astloch') echo 'selected="selected"';?>><?php _e('Astloch','weblizar'); ?></option>
+	<option  value="arno pro bold italic"<?php if($this->value()== 'arno pro bold italic') echo 'selected="selected"';?>><?php _e('Arno pro bold italic','weblizar'); ?></option>
+	<option  value="Bad Script"<?php if($this->value()== 'Bad Script') echo 'selected="selected"';?>><?php _e('Bad Script','weblizar'); ?></option>
+	<option  value="Bilbo"<?php if($this->value()== 'Bilbo') echo 'selected="selected"';?>><?php _e('Bilbo','weblizar'); ?></option>
+	<option  value="Calligraffitti"<?php if($this->value()== 'Calligraffitti') echo 'selected="selected"';?>><?php _e('Calligraffitti','weblizar'); ?></option>
+	<option  value="Candal"<?php if($this->value()== 'Candal') echo 'selected="selected"';?>><?php _e('Candal','weblizar'); ?></option>
+	<option  value="Cedarville Cursive"<?php if($this->value()== 'Cedarville Cursive') echo 'selected="selected"';?>><?php _e('Cedarville Cursive','weblizar'); ?></option>
+	<option  value="Clicker Script"<?php if($this->value()== 'Clicker Script') echo 'selected="selected"';?>><?php _e('Clicker Script','weblizar'); ?></option>
+	<option  value="Dancing Script"<?php if($this->value()== 'Dancing Script') echo 'selected="selected"';?>><?php _e('Dancing Script','weblizar'); ?></option>
+	<option  value="Dawning of a New Day"<?php if($this->value()== 'Dawning of a New Day') echo 'selected="selected"';?>><?php _e('Dawning of a New Day','weblizar'); ?></option>
+	<option  value="Fredericka the Great"<?php if($this->value()== 'Fredericka the Great') echo 'selected="selected"';?>><?php _e('Fredericka the Great','weblizar'); ?></option>
+	<option  value="Felipa"<?php if($this->value()== 'Felipa') echo 'selected="selected"';?>><?php _e('Felipa','weblizar'); ?></option>
+	<option  value="Give You Glory"<?php if($this->value()== 'Give You Glory') echo 'selected="selected"';?>><?php _e('Give You Glory','weblizar'); ?></option>
+	<option  value="Great vibes"<?php if($this->value()== 'Great vibes') echo 'selected="selected"';?>><?php _e('Great vibes','weblizar'); ?></option>
+	<option  value="Homemade Apple"<?php if($this->value()== 'Homemade Apple') echo 'selected="selected"';?>><?php _e('Homemade Apple','weblizar'); ?></option>
+	<option  value="Indie Flower"<?php if($this->value()== 'Indie Flower') echo 'selected="selected"';?>><?php _e('Indie Flower','weblizar'); ?></option>
+	<option  value="Italianno"<?php if($this->value()== 'Italianno') echo 'selected="selected"';?>><?php _e('Italianno','weblizar'); ?></option>
+	<option  value="Jim Nightshade"<?php if($this->value()== 'Jim Nightshade') echo 'selected="selected"';?>><?php _e('Jim Nightshade','weblizar'); ?></option>
+	<option  value="Kaushan Script"<?php if($this->value()== 'Kaushan Script') echo 'selected="selected"';?>><?php _e('Kaushan Script','weblizar'); ?></option>
+	<option  value="Kristi"<?php if($this->value()== 'Kristi') echo 'selected="selected"';?>><?php _e('Kristi','weblizar'); ?></option>
+	<option  value="La Belle Aurore"<?php if($this->value()== 'La Belle Aurore') echo 'selected="selected"';?>><?php _e('La Belle Aurore','weblizar'); ?></option>
+	<option  value="Meddon"<?php if($this->value()== 'Meddon') echo 'selected="selected"';?>><?php _e('Meddon','weblizar'); ?></option>
+	<option  value="Montez"<?php if($this->value()== 'Montez') echo 'selected="selected"';?>><?php _e('Montez','weblizar'); ?></option>
+	<option  value="Megrim"<?php if($this->value()== 'Megrim') echo 'selected="selected"';?>><?php _e('Megrim','weblizar'); ?></option>
+	<option  value="Mr Bedfort"<?php if($this->value()== 'Mr Bedfort') echo 'selected="selected"';?>><?php _e('Mr Bedfort','weblizar'); ?></option>
+	<option  value="Neucha"<?php if($this->value()== 'Neucha') echo 'selected="selected"';?>><?php _e('Neucha','weblizar'); ?></option>
+	<option  value="Nothing You Could Do"<?php if($this->value()== 'Nothing You Could Do') echo 'selected="selected"';?>><?php _e('Nothing You Could Do','weblizar'); ?></option>
+	<option  value="Open Sans"<?php if($this->value()== 'Open Sans') echo 'selected="selected"';?>><?php _e('Open Sans','weblizar'); ?></option>
+	<option  value="Over the Rainbow"<?php if($this->value()== 'Over the Rainbow') echo 'selected="selected"';?>><?php _e('Over the Rainbow','weblizar'); ?></option>
+	<option  value="Pinyon Script"<?php if($this->value()== 'Pinyon Script') echo 'selected="selected"';?>><?php _e('Pinyon Script','weblizar'); ?></option>
+	<option  value="Princess Sofia"<?php if($this->value()== 'Princess Sofia') echo 'selected="selected"';?>><?php _e('Princess Sofia','weblizar'); ?></option>
+	<option  value="Reenie Beanie"<?php if($this->value()== 'Reenie Beanie') echo 'selected="selected"';?>><?php _e('Reenie Beanie','weblizar'); ?></option>
+	<option  value="Rochester"<?php if($this->value()== 'Rochester') echo 'selected="selected"';?>><?php _e('Rochester','weblizar'); ?></option>
+	<option  value="Rock Salt"<?php if($this->value()== 'Rock Salt') echo 'selected="selected"';?>><?php _e('Rock Salt','weblizar'); ?></option>
+	<option  value="Ruthie"<?php if($this->value()== 'Ruthie') echo 'selected="selected"';?>><?php _e('Ruthie','weblizar'); ?></option>
+	<option  value="Sacramento"<?php if($this->value()== 'Sacramento') echo 'selected="selected"';?>><?php _e('Sacramento','weblizar'); ?></option>
+	<option  value="Sans Serif"<?php if($this->value()== 'Sans Serif') echo 'selected="selected"';?>><?php _e('Sans Serif','weblizar'); ?></option>
+	<option  value="Seaweed Script"<?php if($this->value()== 'Seaweed Script') echo 'selected="selected"';?>><?php _e('Seaweed Script','weblizar'); ?></option>
+	<option  value="Shadows Into Light"<?php if($this->value()== 'Shadows Into Light') echo 'selected="selected"';?>><?php _e('Shadows Into Light','weblizar'); ?></option>
+	<option  value="Smythe"<?php if($this->value()== 'Smythe') echo 'selected="selected"';?>><?php _e('Smythe','weblizar'); ?></option>
+	<option  value="Stalemate"<?php if($this->value()== 'Stalemate') echo 'selected="selected"';?>><?php _e('Stalemate','weblizar'); ?></option>
+	<option  value="Tahoma"<?php if($this->value()== 'Tahoma') echo 'selected="selected"';?>><?php _e('Tahoma','weblizar'); ?></option>
+	<option  value="Tangerine"<?php if($this->value()== 'Tangerine') echo 'selected="selected"';?>><?php _e('Tangerine','weblizar'); ?></option>
+	<option  value="Trade Winds"<?php if($this->value()== 'Trade Winds') echo 'selected="selected"';?>><?php _e('Trade Winds','weblizar'); ?></option>
+	<option  value="UnifrakturMaguntia"<?php if($this->value()== 'UnifrakturMaguntia') echo 'selected="selected"';?>><?php _e('UnifrakturMaguntia','weblizar'); ?></option>
+	<option  value="Verdana"<?php if($this->value()== 'Verdana') echo 'selected="selected"';?>><?php _e('Verdana','weblizar'); ?></option>
+	<option  value="Waiting for the Sunrise"<?php if($this->value()== 'Waiting for the Sunrise') echo 'selected="selected"';?>><?php _e('Waiting for the Sunrise','weblizar'); ?></option>
+	<option  value="Warnes"<?php if($this->value()== 'Warnes') echo 'selected="selected"';?>><?php _e('Warnes','weblizar'); ?></option>
+	<option  value="Yesteryear"<?php if($this->value()== 'Yesteryear') echo 'selected="selected"';?>><?php _e('Yesteryear','weblizar'); ?></option>
+	<option  value="Zeyada"<?php if($this->value()== 'Zeyada') echo 'selected="selected"';?>><?php _e('Zeyada','weblizar'); ?></option>
+    </select>		
+		
+  <?php
+ }
 }
 endif;
 ?>

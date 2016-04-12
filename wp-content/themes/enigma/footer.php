@@ -55,6 +55,7 @@
 <style type="text/css">
 <?php { echo esc_attr($wl_theme_options['custom_css']); } ?>
 </style>
+<?php get_template_part('google', 'font'); ?>
 <?php wp_footer(); ?>
 </body>
 </html>

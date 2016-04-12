@@ -4,14 +4,26 @@ Consider weblizar PRE-Fix for function-name and as a slug of the Theme Enigma.
 
 Enigma
 
+
+CHANGE-LOG:
+@Version: 2.3 [04/03/2016]
+1. Google font option added.
+2. Some other minor issue fixed.
+
+@Version: 2.3 [04/03/2016]
+1. Remove Theme Option Page.
+2. Service Link Added in Customizer.
+3. Service On/Off.
+4. Footer-Call-Out icon setting added.
+
+
+
 CHANGE-LOG:
 @Version: 2.2 [17/10/2015]
 1. Mobils Menus Fix.
 
-
 @Version: 2.1 [08/10/2015]
 1. Parallax Layout in *Premium Theme added..
-
 
 @Version: 2.0 [24/09/2015]
 1. Menus Fixes.

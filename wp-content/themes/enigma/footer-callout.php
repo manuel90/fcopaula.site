@@ -4,7 +4,7 @@
 		<div class="row">
 		<?php if($wl_theme_options['fc_title'] !='') { ?>
 			<div class="col-md-9">
-			<p><i class="fa fa-thumbs-up"></i><?php echo esc_attr($wl_theme_options['fc_title']);?></p>
+			<p><?php if($wl_theme_options['fc_icon'] !='') { ?><i class="<?php echo esc_attr($wl_theme_options['fc_icon']);?>"></i><?php } ?><?php echo esc_attr($wl_theme_options['fc_title']);?></p>
 			</div>
 			<?php } ?>
 			<?php if($wl_theme_options['fc_btn_txt'] !='') { ?>

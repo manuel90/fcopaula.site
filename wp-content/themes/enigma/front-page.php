@@ -3,8 +3,10 @@ $wl_theme_options = weblizar_get_options();
 $wl_theme_options['_frontpage'];
 if ($wl_theme_options['_frontpage']=="1" && is_front_page())
 {	get_template_part('home','slideshow'); 
+	if($wl_theme_options['service_home'] == "1") {
 	get_template_part('home','services'); 
-	$wl_theme_options = weblizar_get_options();
+	}
+	
 	if($wl_theme_options['portfolio_home'] == "1") {
 	get_template_part('home','portfolio'); 
 	}
