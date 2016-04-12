@@ -18,19 +18,19 @@ define('PATH_PLUGIN',dirname(__FILE__));
 require_once('metaBoxes'.DIRECTORY_SEPARATOR.'FpsaBoxAuthors.php');
 require_once('metaBoxes'.DIRECTORY_SEPARATOR.'FpsaBoxBooks.php');
 
-//use App\Models\Usuario;
 class FpsaLibrary {
 
 	var $boxAuthors = null;
+	var $boxBooks = null;
 	/**
 	 * Construct Function
 	 */
 	public function __construct() {
 
 		$this->boxAuthors = new FpsaBoxAuthors();
+		$this->boxBooks = new FpsaBoxBooks();
+		
 
-		$boxBooks = new FpsaBoxBooks();
-		$boxBooks->wpAddBox();
 
 		add_action( 'edit_user_profile', array($this, 'addBoxBooks') );
 		
@@ -63,23 +63,18 @@ class FpsaLibrary {
 
 		wp_register_script( 'fpsa_library', plugins_url( 'fpsa_library.js', __FILE__), array(), false, true );
  
-		// Localize the script with new data
-		$translation_array = array(
-		    'some_string' => __( 'Some string to translate', 'textdomain' ),
-		    'a_value' => '10'
-		);
-		//wp_localize_script( 'some_handle', 'object_name', $translation_array );
-		 
-		// Enqueued script with localized data.
 		wp_enqueue_script( 'fpsa_library' );
 		
 		wp_register_style( 'fpsa_style', plugins_url( 'css/fpsa.css', __FILE__ ) );
     	wp_enqueue_style( 'fpsa_style' );
 
-		FpsaBoxAuthors::actions();
-
 		add_action( 'admin_menu', array($this, 'addMenuAuthors') );
 
+		$this->boxAuthors->ajaxActions();
+
+		$this->boxBooks->ajaxActions();
+		
+		$this->boxBooks->wpAddBox();
 		
 	}
 
@@ -89,7 +84,7 @@ class FpsaLibrary {
 	public function addBoxBooks($user) {
 		
 		if( user_can($user, 'author') ) {
-			do_meta_boxes('user-profile-author', 'advanced', null);
+			do_meta_boxes('user-profile-author', 'advanced', $user);
 		}
 	}
 
@@ -157,12 +152,6 @@ class FpsaLibrary {
 		register_post_type ( 'fpsa-books', $options );
 	}
 
-	public function fpsa_add_custom_box($id, $title, $callback, $screen = null, $context = 'advanced', $priority = 'default', $callback_args = null) {
-
-		
-
-	}
-
 	/**
 	 * Function call to set up "add_meta_boxes" action hook
 	 */
@@ -170,14 +159,15 @@ class FpsaLibrary {
 		$this->boxAuthors->wpAddBox();
 	}
 
-	
-
 	/**
 	 * Function call when plugin is activated
 	 */
 	public function activate() {
 
-		//self::installTables();
+		
+		/**
+		 * Here scripts when the plugin is activated 
+		 */
 	}
 
 	/**
@@ -185,36 +175,11 @@ class FpsaLibrary {
 	 */
 	public function deactivate() {
 
-		//self::uninstallTables();
+		/**
+		 * here scripts when the plugin is deactivated
+		 */
 	}
 
-	/**
-	 * Function created to script code database actions
-	 * (OPTIONAL)
-	 */
-	public function installTables() {
-		global $wpdb;
-
-		$sql = "CREATE TABLE FpsaLibrary_books (
-          wp_id bigint(20) NOT NULL auto_increment,
-          wp_key varchar(255) default NULL,
-          wp_value longtext,
-          PRIMARY KEY  (`wp_id`)
-        ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;";
-
-    	$results = $wpdb->query($sql);
-	}
-	/**
-	 * Function created to script code database actions
-	 * (OPTIONAL)
-	 */
-	public function uninstallTables() {
-		global $wpdb;
-
-		$sql = "DROP TABLE FpsaLibrary_books;";
-
-    	$results = $wpdb->query($sql);
-	}
 }
 /**
  * Instance of Plugin FpsaLibrary 

@@ -1,3 +1,11 @@
+
+#box_books h2{
+    padding: 8px 12px;
+    margin: 0;
+}
+
+/*** css loading status *****/
+
 .fpsa_prelative {
   position: relative;
 }

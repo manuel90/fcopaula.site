@@ -1,15 +1,27 @@
 <div class="box-authors">
-	<div class="">
-		<select id="available_authors_book">
+	<div class="form">
+		<select id="available_authors">
 			<option value=""><?php _e('--- Select a User ---', 'fpsa_lang'); ?></option>
-			<?php foreach($usersOption as $user) { ?>
-				<option value="<?php echo $user->ID; ?>"><?php echo $user->data->display_name; ?></option>
-			<?php } ?>
 		</select>
 		<a id="btnFpsaAddAuthor" href="#" class="button button-primary button-large"><?php _e('Add', 'fpsa_lang'); ?></a>
 	</div>
+	<hr />
 	<div class="selecteds">
-		<ul id="fpsa_authors_book">
-		</ul>
+		<table class="widefat">
+			<thead>
+				<tr>
+					<th><?php _e('Name', 'fpsa_lang'); ?></th>
+					<th><?php _e('Actions', 'fpsa_lang'); ?></th>
+				</tr>
+			</thead>
+			<tbody id="fpsa_authors">
+			</tbody>
+			<tfoot>
+				<tr>
+					<th><?php _e('Name', 'fpsa_lang'); ?></th>
+					<th><?php _e('Actions', 'fpsa_lang'); ?></th>
+				</tr>
+			</tfoot>
+		</table>
 	</div>
 </div>
